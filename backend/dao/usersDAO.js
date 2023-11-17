@@ -6,6 +6,8 @@
     mp272@njit.edu
 */
 
+import { ObjectId } from "mongodb";
+
 // define variable for data
 let users;
 
@@ -23,19 +25,17 @@ export default class UsersDAO {
         }
     }
 
-    // request data
+    // request users
     static async getUsers({ filters = null, page = 0, usersPerPage = 20 } = {}) {
         // filter data
         let query;
         if (filters) {
-            /*if ("age" in filters) {
-                query = { age: { $eq: filters["age"] } };
-            } else if ("state" in filters) {
-                query = { $text: { $search: filters["state"] } };
-            } else */
-            if ("gender" in filters) {
-                query = { gender: { $eq: filters["gender"] } };
-            }
+            if ("user_id" in filters) query = { _id: new ObjectId(filters["user_id"]) };
+            if ("fname" in filters) query = { "name.first": filters["fname"] };
+            if ("lname" in filters) query = { "name.last": filters["lname"] };
+            if ("age" in filters) query = { "dob.age": parseInt(filters["age"]) };
+            if ("state" in filters) query = { "location.state": filters["state"] };
+            if ("gender" in filters) query = { gender: filters["gender"] };
         }
 
         // request
@@ -52,6 +52,16 @@ export default class UsersDAO {
             console.error(`Unable to issue find command, ${e}`);
             console.error(e);
             return { usersList: [], totalNumUsers: 0 };
+        }
+    }
+
+    // all posts by user
+    static async getPostsByUser(user_id) {
+        try {
+            return await users.find({ _id: ObjectId(user_id) });
+        } catch (e) {
+            console.error(`something went wrong in getUserById: ${e}`);
+            throw e;
         }
     }
 }

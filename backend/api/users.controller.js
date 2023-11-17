@@ -18,14 +18,12 @@ export default class UsersController {
 
         // define filter
         let filters = {};
-        /* if (req.query.age) {
-            filters.age = req.query.age;
-        } else if (req.query.state) {
-            filters.state = req.query.state;
-        } else */
-        if (req.query.gender) {
-            filters.gender = req.query.gender;
-        }
+        if (req.query.user_id) filters.user_id = req.query.user_id;
+        if (req.query.fname) filters.fname = req.query.fname;
+        if (req.query.lname) filters.lname = req.query.lname;
+        if (req.query.age) filters.age = req.query.age;
+        if (req.query.state) filters.state = req.query.state;
+        if (req.query.gender) filters.gender = req.query.gender;
 
         // recover data
         const { usersList, totalNumUsers } = await usersDAO.getUsers({
