@@ -8,13 +8,18 @@
 
 // import dependencies
 import express from "express";
-import usersController from "./users.controller.js";
+import UsersController from "./users.controller.js";
+import PostsController from "./posts.controller.js";
 
 // create router object
 const router = express.Router();
 
 // request to view movies
-router.route("/").get(usersController.apiGetUsers);
+router.route("/").get(UsersController.apiGetUsers);
+
+// add a route to handle /posts HTTP requests
+router.route("/posts").post(PostsController.apiPostPost).put(PostsController.apiUpdatePost).delete(PostsController.apiDeletePost);
+//router.route("/posts").put(PostsController.apiLikePost);
 
 // export for other scripts to use
 export default router;
