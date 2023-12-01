@@ -1,8 +1,8 @@
 /*
     Michael Peluso
-    11/3/23
+    11/17/23
     IT 302 001
-    Unit 7 Assignment
+    Unit 9 Assignment
     mp272@njit.edu
 */
 
@@ -30,12 +30,14 @@ export default class UsersDAO {
         // filter data
         let query;
         if (filters) {
-            if ("user_id" in filters) query = { _id: new ObjectId(filters["user_id"]) };
-            if ("fname" in filters) query = { "name.first": filters["fname"] };
-            if ("lname" in filters) query = { "name.last": filters["lname"] };
-            if ("age" in filters) query = { "dob.age": parseInt(filters["age"]) };
-            if ("state" in filters) query = { "location.state": filters["state"] };
-            if ("gender" in filters) query = { gender: filters["gender"] };
+            if ("user_id" in filters) query = { ...query, _id: new ObjectId(filters["user_id"]) };
+            if ("fname" in filters) query = { ...query, "name.first": { $regex: new RegExp(filters["fname"], "i") } };
+            if ("lname" in filters) query = { ...query, "name.last": { $regex: new RegExp(filters["lname"], "i") } };
+            if ("username" in filters) query = { ...query, "login.username": { $regex: new RegExp(filters["username"], "i") } };
+            if ("age" in filters) query = { ...query, "dob.age": parseInt(filters["age"]) };
+            if ("city" in filters) query = { ...query, "location.city": filters["city"] };
+            if ("state" in filters) query = { ...query, "location.state": filters["state"] };
+            if ("gender" in filters) query = { ...query, gender: filters["gender"] };
         }
 
         // request
@@ -61,6 +63,33 @@ export default class UsersDAO {
             return await users.find({ _id: ObjectId(user_id) });
         } catch (e) {
             console.error(`something went wrong in getUserById: ${e}`);
+            throw e;
+        }
+    }
+
+    // get user by id
+    static async getUserById(id) {
+        try {
+            return await users
+                // join
+                .aggregate([
+                    {
+                        $match: {
+                            _id: new ObjectId(id),
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "posts",
+                            localField: "_id",
+                            foreignField: "user_id",
+                            as: "posts",
+                        },
+                    },
+                ])
+                .next();
+        } catch (e) {
+            console.error(`something went wrong in getMovieById: ${e}`);
             throw e;
         }
     }

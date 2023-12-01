@@ -1,8 +1,8 @@
 /*
     Michael Peluso
-    11/3/23
+    11/17/23
     IT 302 001
-    Unit 7 Assignment
+    Unit 9 Assignment
     mp272@njit.edu
 */
 
@@ -16,6 +16,9 @@ const router = express.Router();
 
 // request to view movies
 router.route("/").get(UsersController.apiGetUsers);
+
+// add a route to handle /id:/id HTTP requests
+router.route("/id/:id").get(UsersController.apiGetUserById);
 
 // add a route to handle /posts HTTP requests
 router.route("/posts").post(PostsController.apiPostPost).put(PostsController.apiUpdatePost).delete(PostsController.apiDeletePost);

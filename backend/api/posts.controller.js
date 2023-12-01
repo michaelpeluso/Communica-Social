@@ -1,3 +1,11 @@
+/*
+    Michael Peluso
+    11/17/23
+    IT 302 001
+    Unit 9 Assignment
+    mp272@njit.edu
+*/
+
 // import dependencies
 import PostsDAO from "../dao/postsDAO.js";
 
@@ -16,7 +24,7 @@ export default class PostsController {
                 tags: req.body.tags,
             };
 
-            //send info to addReview method
+            //send info to addPost method
             const PostResponse = await PostsDAO.addPost(data);
             //return success/failure
             res.json(PostResponse);
@@ -39,7 +47,7 @@ export default class PostsController {
                 tags: req.body.tags,
             };
 
-            // extract reviewID and review
+            // extract data
             const Response = await PostsDAO.updatePost(data);
 
             // author not found
@@ -48,7 +56,7 @@ export default class PostsController {
                 res.status.json({ error });
             }
             if (Response.modifiedCount === 0) {
-                throw new Error("Unable to update review. User may not be original poster");
+                throw new Error("Unable to update post. User may not be original poster.");
             }
             res.json(Response);
         } catch (e) {
@@ -65,7 +73,7 @@ export default class PostsController {
             };
 
             // delete
-            const Response = await PostsDAO.deleteReview(data);
+            const Response = await PostsDAO.deletePost(data);
             res.json(Response);
         } catch (e) {
             res.status(500).json({ error: e.message });

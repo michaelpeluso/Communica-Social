@@ -1,8 +1,8 @@
 /*
     Michael Peluso
-    11/3/23
+    11/17/23
     IT 302 001
-    Unit 7 Assignment
+    Unit 9 Assignment
     mp272@njit.edu
 */
 
@@ -24,7 +24,7 @@ export default class PostsDAO {
         try {
             posts = await conn.db(process.env.DB_NAME).collection("posts");
         } catch (e) {
-            console.error(`unable to establish connection handle in reviewDAO: ${e}`);
+            console.error(`Unable to establish connection handle in postDAO: ${e}`);
         }
     }
 
@@ -46,7 +46,7 @@ export default class PostsDAO {
             // insert into mongodb
             return await posts.insertOne(postDoc);
         } catch (e) {
-            console.error(`unable to post review: ${e}`);
+            console.error(`unable to make post: ${e}`);
             console.error(e);
             return { error: e };
         }
@@ -76,14 +76,14 @@ export default class PostsDAO {
             // insert into mongodb
             return updateResponse;
         } catch (e) {
-            console.error(`unable to update review: ${e}`);
+            console.error(`unable to update post: ${e}`);
             console.error(e);
             return { error: e };
         }
     }
 
     // delete post
-    static async deleteReview(data) {
+    static async deletePost(data) {
         try {
             // insert into mongodb
             const deleteResponse = await posts.deleteOne({
@@ -92,7 +92,7 @@ export default class PostsDAO {
             });
             return deleteResponse;
         } catch (e) {
-            console.error(`unable to delete review: ${e}`);
+            console.error(`unable to delete post: ${e}`);
             console.error(e);
             return { error: e.message };
         }
