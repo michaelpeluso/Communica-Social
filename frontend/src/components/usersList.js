@@ -1,3 +1,12 @@
+/*
+    Michael Peluso
+    12/2/23
+    IT 302 001
+    Unit 12 Assignment
+    mp272@njit.edu
+*/
+
+// import dependencies
 import React, { useState, useEffect } from "react";
 import UserDataService from "../services/usersDataService";
 import { Link } from "react-router-dom";
@@ -10,38 +19,40 @@ import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 
 const UsersList = (props) => {
+    // variables
     const [users, setUsers] = useState([]);
-    const [searchTitle, setSearchTitle] = useState("");
+    const [uName, setUName] = useState("");
+    const [fName, setFName] = useState("");
+    const [lName, setLName] = useState("");
 
     const [currentPage, setCurrentPage] = useState(0);
     const [entriesPerPage, setEntriesPerPage] = useState(0);
     const [currentSearchMode, setCurrentSearchMode] = useState("");
 
+    //useEffects
     useEffect(() => {
         retrieveUsers();
     }, []);
-
     useEffect(() => {
         retrieveNextPage();
     }, [currentPage]);
-
     useEffect(() => {
         setCurrentPage(0);
     }, [currentSearchMode]);
 
     const retrieveNextPage = () => {
         if (currentSearchMode === "findByTitle") {
-            findByTitle();
+            querySearch();
         } else {
             retrieveUsers();
         }
     };
 
+    // get all users
     const retrieveUsers = () => {
         setCurrentSearchMode("");
         UserDataService.getAll(currentPage)
             .then((response) => {
-                console.log(response.data);
                 setUsers(response.data.users);
                 setCurrentPage(response.data.page);
                 setEntriesPerPage(response.data.entries_per_page);
@@ -51,27 +62,26 @@ const UsersList = (props) => {
             });
     };
 
-    const onChangeSearchTitle = (e) => {
-        const searchTitle = e.target.value;
-        setSearchTitle(searchTitle);
-    };
+    // update query
+    const querySearch = () => {
+        const query = {
+            uname: uName,
+            fname: fName,
+            lname: lName,
+        };
 
-    const find = (query, by) => {
-        UserDataService.find(query, by, currentPage)
+        UserDataService.find(query, currentPage)
             .then((response) => {
-                console.log(response.data);
                 setUsers(response.data.users);
             })
             .catch((e) => {
                 console.log(e);
             });
+
+        console.log(users);
     };
 
-    const findByTitle = () => {
-        setCurrentSearchMode("findByTitle");
-        find(searchTitle, "title");
-    };
-
+    // return page content
     return (
         <div className="App">
             <Container>
@@ -79,24 +89,50 @@ const UsersList = (props) => {
                     <Row>
                         <Col>
                             <Form.Group>
-                                <Form.Control type="text" placeholder="Search by title" value={searchTitle} onChange={onChangeSearchTitle} />
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Username"
+                                    value={uName}
+                                    onChange={(e) => {
+                                        setUName(e.target.value);
+                                    }}
+                                />
+                                <Form.Control
+                                    type="text"
+                                    placeholder="First Name"
+                                    value={fName}
+                                    onChange={(e) => {
+                                        setFName(e.target.value);
+                                    }}
+                                />
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Last Name"
+                                    value={lName}
+                                    onChange={(e) => {
+                                        setLName(e.target.value);
+                                    }}
+                                />
                             </Form.Group>
-                            <Button variant="primary" type="button" onClick={findByTitle}>
+                            <Button variant="primary" type="button" onClick={querySearch}>
                                 Search
                             </Button>
                         </Col>
                     </Row>
                 </Form>
+                <br />
                 <Row>
                     {users.map((user) => {
                         return (
                             <Col>
                                 <Card style={{ width: "18rem" }}>
-                                    <Card.Img src={user.poster + "/100px180"} />
+                                    <Card.Img src={user.picture.large} />
                                     <Card.Body>
-                                        <Card.Title>{user.title}</Card.Title>
-                                        <Card.Text>{user.plot}</Card.Text>
-                                        <Link to={"/users/" + user._id}>View Reviews</Link>
+                                        <Card.Title>{user.login.username}</Card.Title>
+                                        <Card.Text>
+                                            {user.name.first} {user.name.last}
+                                        </Card.Text>
+                                        <Link to={"/mp272/users/" + user._id}>View</Link>
                                     </Card.Body>
                                 </Card>
                             </Col>
@@ -118,4 +154,5 @@ const UsersList = (props) => {
     );
 };
 
+// send data
 export default UsersList;

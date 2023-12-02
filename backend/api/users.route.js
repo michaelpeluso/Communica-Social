@@ -1,8 +1,8 @@
 /*
     Michael Peluso
-    11/17/23
+    12/2/23
     IT 302 001
-    Unit 9 Assignment
+    Unit 12 Assignment
     mp272@njit.edu
 */
 
@@ -17,12 +17,13 @@ const router = express.Router();
 // request to view movies
 router.route("/").get(UsersController.apiGetUsers);
 
-// add a route to handle /id:/id HTTP requests
-router.route("/id/:id").get(UsersController.apiGetUserById);
-
 // add a route to handle /posts HTTP requests
-router.route("/posts").post(PostsController.apiPostPost).put(PostsController.apiUpdatePost).delete(PostsController.apiDeletePost);
+router.route("/posts").get(PostsController.apiGetUserPosts).post(PostsController.apiPostPost).put(PostsController.apiUpdatePost).delete(PostsController.apiDeletePost);
 //router.route("/posts").put(PostsController.apiLikePost);
 
+router.route("/login").get(UsersController.apiGetUsers);
+
+// add a route to handle /id:/id HTTP requests
+router.route("/id/:id").get(UsersController.apiGetUserById);
 // export for other scripts to use
 export default router;

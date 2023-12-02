@@ -1,11 +1,12 @@
 /*
     Michael Peluso
-    11/17/23
+    12/2/23
     IT 302 001
-    Unit 9 Assignment
+    Unit 12 Assignment
     mp272@njit.edu
 */
 
+// import dependencies
 import { ObjectId } from "mongodb";
 
 // define variable for data
@@ -31,6 +32,7 @@ export default class UsersDAO {
         let query;
         if (filters) {
             if ("user_id" in filters) query = { ...query, _id: new ObjectId(filters["user_id"]) };
+            if ("uname" in filters) query = { ...query, "login.username": { $regex: new RegExp(filters["uname"], "i") } };
             if ("fname" in filters) query = { ...query, "name.first": { $regex: new RegExp(filters["fname"], "i") } };
             if ("lname" in filters) query = { ...query, "name.last": { $regex: new RegExp(filters["lname"], "i") } };
             if ("username" in filters) query = { ...query, "login.username": { $regex: new RegExp(filters["username"], "i") } };
@@ -62,7 +64,7 @@ export default class UsersDAO {
         try {
             return await users.find({ _id: ObjectId(user_id) });
         } catch (e) {
-            console.error(`something went wrong in getUserById: ${e}`);
+            console.error(`something went wrong in getPostsByUser: ${e}`);
             throw e;
         }
     }
@@ -89,7 +91,7 @@ export default class UsersDAO {
                 ])
                 .next();
         } catch (e) {
-            console.error(`something went wrong in getMovieById: ${e}`);
+            console.error(`something went wrong in getUserById: ${e}`);
             throw e;
         }
     }

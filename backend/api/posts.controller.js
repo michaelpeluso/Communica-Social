@@ -1,8 +1,8 @@
 /*
     Michael Peluso
-    11/17/23
+    12/2/23
     IT 302 001
-    Unit 9 Assignment
+    Unit 12 Assignment
     mp272@njit.edu
 */
 
@@ -11,6 +11,34 @@ import PostsDAO from "../dao/postsDAO.js";
 
 // manages connection between request and response
 export default class PostsController {
+    // Method for GET request
+    static async apiGetUserPosts(req, res, next) {
+        const usersPerPage = req.query.usersPerPage ? parseInt(req.query.usersPerPage) : 20;
+        const page = req.query.page ? parseInt(req.query.page) : 0;
+
+        // define filter
+        let filters = {};
+        if (req.query.user_id) filters.user_id = req.query.user_id;
+        if (req.query.parent_id) filters.parent_id = req.query.parent_id;
+
+        // recover data
+        const { usersList, totalNumUsers } = await PostsDAO.getPosts({
+            filters,
+            page,
+            usersPerPage,
+        });
+
+        // create json response
+        let response = {
+            users: usersList,
+            page: page,
+            filters: filters,
+            entries_per_page: usersPerPage,
+            total_results: totalNumUsers,
+        };
+        res.json(response);
+    }
+
     //Method for POST request
     static async apiPostPost(req, res, next) {
         try {
@@ -18,10 +46,12 @@ export default class PostsController {
             const data = {
                 parent_id: req.body.parent_id,
                 user_id: req.body.user_id,
+                username: req.body.username,
                 title: req.body.title,
                 body: req.body.body,
                 likes: req.body.likes,
                 tags: req.body.tags,
+                lastModified: req.body.lastModified,
             };
 
             //send info to addPost method

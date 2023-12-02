@@ -1,8 +1,8 @@
 /*
     Michael Peluso
-    11/17/23
+    12/2/23
     IT 302 001
-    Unit 9 Assignment
+    Unit 12 Assignment
     mp272@njit.edu
 */
 
@@ -20,6 +20,7 @@ export default class UsersController {
         // define filter
         let filters = {};
         if (req.query.user_id) filters.user_id = req.query.user_id;
+        if (req.query.uname) filters.uname = req.query.uname;
         if (req.query.fname) filters.fname = req.query.fname;
         if (req.query.lname) filters.lname = req.query.lname;
         if (req.query.username) filters.username = req.query.username;

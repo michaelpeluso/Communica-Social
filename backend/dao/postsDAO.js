@@ -1,8 +1,8 @@
 /*
     Michael Peluso
-    11/17/23
+    12/2/23
     IT 302 001
-    Unit 9 Assignment
+    Unit 12 Assignment
     mp272@njit.edu
 */
 
@@ -28,6 +28,34 @@ export default class PostsDAO {
         }
     }
 
+    // get posts
+    // request users
+    static async getPosts({ filters = null, page = 0, usersPerPage = 20 } = {}) {
+        // filter data
+        let query;
+        if (filters) {
+            if ("user_id" in filters) query = { ...query, _id: new ObjectId(filters["user_id"]) };
+            if ("parent_id" in filters) query = { ...query, _id: new ObjectId(filters["parent_id"]) };
+        }
+
+        // request
+        let cursor;
+        try {
+            cursor = await posts
+                .find(query)
+                .sort({ lastModified: -1 })
+                .limit(usersPerPage)
+                .skip(usersPerPage * page);
+            const usersList = await cursor.toArray();
+            const totalNumUsers = await posts.countDocuments(query);
+            return { usersList, totalNumUsers };
+        } catch (e) {
+            console.error(`Unable to issue find command, ${e}`);
+            console.error(e);
+            return { usersList: [], totalNumUsers: 0 };
+        }
+    }
+
     // add post
     static async addPost(data) {
         try {
@@ -36,6 +64,7 @@ export default class PostsDAO {
                 // convert strings to id objects
                 parent_id: new ObjectId(data.parent_id) ? data.parent_id : null, // null if no parent exists
                 user_id: new ObjectId(data.user_id),
+                username: data.username,
                 title: data.title,
                 body: data.body,
                 likes: data.likes,
