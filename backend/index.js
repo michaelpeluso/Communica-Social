@@ -1,8 +1,8 @@
 /*
     Michael Peluso
-    11/3/23
+    12/2/23
     IT 302 001
-    Unit 7 Assignment
+    Unit 12 Assignment
     mp272@njit.edu
 */
 
@@ -11,6 +11,7 @@ import app from "./server.js";
 import mongodb from "mongodb";
 import dotenv from "dotenv";
 import UsersDAO from "./dao/usersDAO.js";
+import PostsDAO from "./dao/postsDAO.js";
 
 // calls to connect to API
 async function main() {
@@ -23,6 +24,7 @@ async function main() {
     try {
         await client.connect();
         await UsersDAO.injectDB(client);
+        await PostsDAO.injectDB(client);
 
         app.listen(port, () => {
             console.log("Server running on port", port);

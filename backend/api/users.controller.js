@@ -1,13 +1,14 @@
 /*
     Michael Peluso
-    11/3/23
+    12/2/23
     IT 302 001
-    Unit 7 Assignment
+    Unit 12 Assignment
     mp272@njit.edu
 */
 
 // import dependencies
-import usersDAO from "../dao/usersDAO.js";
+import PostsDAO from "../dao/postsDAO.js";
+import UsersDAO from "../dao/usersDAO.js";
 
 // methods to get, post, put, and delete database collection
 export default class UsersController {
@@ -18,17 +19,18 @@ export default class UsersController {
 
         // define filter
         let filters = {};
-        /* if (req.query.age) {
-            filters.age = req.query.age;
-        } else if (req.query.state) {
-            filters.state = req.query.state;
-        } else */
-        if (req.query.gender) {
-            filters.gender = req.query.gender;
-        }
+        if (req.query.user_id) filters.user_id = req.query.user_id;
+        if (req.query.uname) filters.uname = req.query.uname;
+        if (req.query.fname) filters.fname = req.query.fname;
+        if (req.query.lname) filters.lname = req.query.lname;
+        if (req.query.username) filters.username = req.query.username;
+        if (req.query.age) filters.age = req.query.age;
+        if (req.query.city) filters.city = req.query.city;
+        if (req.query.state) filters.state = req.query.state;
+        if (req.query.gender) filters.gender = req.query.gender;
 
         // recover data
-        const { usersList, totalNumUsers } = await usersDAO.getUsers({
+        const { usersList, totalNumUsers } = await UsersDAO.getUsers({
             filters,
             page,
             usersPerPage,
@@ -43,5 +45,21 @@ export default class UsersController {
             total_results: totalNumUsers,
         };
         res.json(response);
+    }
+
+    // Passes id parameter to getUserById()
+    static async apiGetUserById(req, res, next) {
+        try {
+            let id = req.params.id || {};
+            let user = await UsersDAO.getUserById(id);
+            if (!user) {
+                res.status(404).json({ error: "user id not found" });
+                return;
+            }
+            res.json(user);
+        } catch (e) {
+            console.log(`api, ${e}`);
+            res.status(500).json({ error: e });
+        }
     }
 }
