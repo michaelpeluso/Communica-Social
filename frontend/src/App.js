@@ -56,7 +56,9 @@ function App() {
                         </Nav.Link>
                         <Nav.Link>
                             {user ? (
-                                <p className="nav-link">Logged In as {user.username}</p>
+                                <Link className="nav-link" to={"/mp272/login"}>
+                                    Logged In as {user.username}
+                                </Link>
                             ) : (
                                 <Link className="nav-link" to={"/mp272/login"}>
                                     Login

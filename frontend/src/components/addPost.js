@@ -72,31 +72,29 @@ const AddPost = (props) => {
 
     // return page content
     return (
-        <div>
-            <Container>
-                {submitted ? (
-                    <div>
-                        <h4>Post submitted successfully</h4>
-                        <Link to={"/mp272/posts"}>Back to posts</Link>
-                    </div>
-                ) : (
-                    <Form>
-                        {/* User Input */}
-                        <Form.Group>
-                            <Form.Label>{editing ? "Edit" : "Create"} Post</Form.Label>
-                            <Form.Control type="text" placeholder="title" required value={title} onChange={onChangeTitle} />
-                            <Form.Control type="text" placeholder="body" required value={body} onChange={onChangeBody} />
-                            <br />
-                        </Form.Group>
-                        <br />
-                        {/* Submit Button */}
-                        <Button variant="primary" onClick={savePost}>
-                            Submit
-                        </Button>
-                    </Form>
-                )}
-            </Container>
-        </div>
+        <Container className="mt-3">
+            {submitted ? (
+                <div>
+                    <h4>Post submitted successfully</h4>
+                    <Link to="/mp272/posts">Back to posts</Link>
+                </div>
+            ) : (
+                <Form className="text-center d-flex flex-column align-items-center mb-3">
+                    {/* User Input */}
+                    <Form.Group className="w-75">
+                        <Form.Label>
+                            <h2 className="my-2">{editing ? "Edit" : "Create"} Post</h2>
+                        </Form.Label>
+                        <Form.Control type="text" placeholder="Title" required value={title} onChange={onChangeTitle} />
+                        <Form.Control className="my-3" as="textarea" rows={3} placeholder="Body" required value={body} onChange={onChangeBody} />
+                    </Form.Group>
+                    {/* Submit Button */}
+                    <Button variant="primary" onClick={savePost}>
+                        Submit
+                    </Button>
+                </Form>
+            )}
+        </Container>
     );
 };
 

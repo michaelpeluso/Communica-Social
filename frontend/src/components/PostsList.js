@@ -103,69 +103,47 @@ const PostsList = (props) => {
     // return page content
     return (
         <div>
-            <Container className="App">
-                <br />
+            <Container className="my-4 w-75">
+                {/* Displaying the posts */}
                 <Row>
-                    {posts.users && // if not null
-                        posts.users.map((post) => {
-                            // loop through all users
-                            if (post.parent_id == null) {
-                                return (
-                                    <div>
-                                        <Card>
-                                            {/* User card */}
-                                            <Card.Header as="h4">{post.title}</Card.Header>
-                                            <Card.Body>
-                                                <p style={{ fontSize: "x-large" }}>{post.body}</p>
-                                                <br />
-                                                <p>Likes: {post.likes}</p>
-                                                <p>
-                                                    Author: <Link to={"/mp272/users/" + post.user_id}>{post.username}</Link>{" "}
-                                                </p>
-                                                <p>Posted On: {new Date(Date.parse(post.lastModified)).toDateString()}</p>
-                                                <p>Post ID: {post._id}</p>
-                                                {/* insert delete button */}
-                                                <div>{deletePost(post, props.user)}</div>
-                                            </Card.Body>
-                                        </Card>
-                                        <br />
-                                    </div>
-                                );
-                            } else {
-                                // if post is a reply
-                                return (
-                                    <div>
-                                        <Card>
-                                            <Card.Header as="h4">Replying to: {post.parent_id}</Card.Header>
-                                            <Card.Body>
-                                                <p style={{ fontSize: "x-large" }}>{post.body}</p>
-                                                <br />
-                                                <p>Likes: {post.likes}</p>
-                                                <p>
-                                                    By: <Link to={"/mp272/users/" + post.user_id}>{post.user_id}</Link>{" "}
-                                                </p>
-                                                <p>Posted On: {new Date(Date.parse(post.date)).toDateString()}</p>
-                                                <p>Post ID: {post._id}</p>
-                                                {/* insert delete button */}
-                                                <div>{deletePost(post, props.user)}</div>
-                                            </Card.Body>
-                                        </Card>
-                                        <br />
-                                    </div>
-                                );
-                            }
-                        })}
+                    {posts.users &&
+                        posts.users.map((post) => (
+                            <div key={post._id} className="mb-4">
+                                {/* Individual post card */}
+                                <Card>
+                                    {/* Post header */}
+                                    <Card.Header className="fs-3 fw-normal">{post.parent_id ? `Replying to: ${post.parent_id}` : post.title}</Card.Header>
+                                    <Card.Body>
+                                        {/* Post body */}
+                                        <p className="fs-4 fw-normal">{post.body}</p>
+                                        {/* Likes count */}
+                                        <p className="text-muted">Likes: {post.likes ? post.likes : 0}</p>
+                                        {/* Author information */}
+                                        <p>
+                                            Author: <Link to={`/mp272/users/${post.user_id}`}>{post.username}</Link>
+                                        </p>
+                                        {/* Posted timestamp */}
+                                        <p>Posted On: {new Date(Date.parse(post.lastModified || post.date)).toDateString()}</p>
+                                        {/* Post ID */}
+                                        <p>Post ID: {post._id}</p>
+                                        {/* Delete button */}
+                                        <div>{deletePost(post, props.user)}</div>
+                                    </Card.Body>
+                                </Card>
+                            </div>
+                        ))}
                 </Row>
-                <br />
-                Showing Page: {currentPage}
-                <Button
-                    variant="link"
-                    onClick={() => {
-                        setCurrentPage(currentPage + 1);
-                    }}
-                >
-                    Get Next {entriesPerPage} Results
-                </Button>
+                {/* Load more button */}
+                <div className="d-flex justify-content-center my-4">
+                    <Button
+                        variant="primary"
+                        onClick={() => {
+                            setCurrentPage(currentPage + 1);
+                        }}
+                    >
+                        Load More
+                    </Button>
+                </div>
             </Container>
         </div>
     );

@@ -84,26 +84,26 @@ const UsersList = (props) => {
     // return page content
     return (
         <div className="App">
-            <Container>
+            <Container className="mt-4">
                 <Form className="text-center d-flex flex-column align-items-center mb-3">
-                    <h2 className="my-3">Find Users</h2>
+                    <h2 className="mb-3">Find Users</h2>
 
                     <Form.Group className="mb-3 row w-75">
-                        <Form.Label className="col-sm-3 col-form-label">Username</Form.Label>
+                        <Form.Label className="col-sm-2 col-form-label">Username</Form.Label>
                         <Col sm={9}>
                             <Form.Control type="text" placeholder="Search by username" value={uName} onChange={(e) => setUName(e.target.value)} />
                         </Col>
                     </Form.Group>
 
                     <Form.Group className="mb-3 row w-75">
-                        <Form.Label className="col-sm-3 col-form-label">First Name</Form.Label>
+                        <Form.Label className="col-sm-2 col-form-label">First Name</Form.Label>
                         <Col sm={9}>
                             <Form.Control type="text" placeholder="Search by first name" value={fName} onChange={(e) => setFName(e.target.value)} />
                         </Col>
                     </Form.Group>
 
                     <Form.Group className="mb-3 row w-75">
-                        <Form.Label className="col-sm-3 col-form-label">Last Name</Form.Label>
+                        <Form.Label className="col-sm-2 col-form-label">Last Name</Form.Label>
                         <Col sm={9}>
                             <Form.Control type="text" placeholder="Search by last name" value={lName} onChange={(e) => setLName(e.target.value)} />
                         </Col>

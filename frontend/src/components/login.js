@@ -119,15 +119,17 @@ const Login = (props) => {
     // return page content
     return (
         <div>
-            <Container>
-                <Form>
+            <Container className="mt-3">
+                <Form className="text-center d-flex flex-column align-items-center mb-3">
                     {/* user input */}
-                    <Form.Group>
-                        <Form.Label>ID</Form.Label>
-                        <Form.Control type="text" placeholder="Enter id" value={id} onChange={onChangeId} />
+                    <Form.Group className="w-75">
+                        <Form.Label>
+                            <h2 className="my-2">Login</h2>
+                        </Form.Label>
+                        <Form.Control type="text" placeholder="Enter User ID" value={id} onChange={onChangeId} />
                     </Form.Group>
                     {/* submit button */}
-                    <Button variant="primary" onClick={login}>
+                    <Button className="mt-3" variant="primary" onClick={login}>
                         Submit
                     </Button>
                 </Form>
