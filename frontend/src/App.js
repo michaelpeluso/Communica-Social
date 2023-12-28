@@ -35,20 +35,34 @@ function App() {
         <div className="App">
             {/* nav bar */}
             <Navbar bg="light" expand="lg">
-                <Navbar.Brand>User Posts</Navbar.Brand>
+                <Navbar.Brand className="mx-3">Communica Social</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="mr-auto">
+                    <Nav className="navbar-nav mr-auto">
                         <Nav.Link>
-                            <Link to={"/mp272/users"}>Users</Link>
+                            <Link className="nav-link" to={"/mp272/users"}>
+                                Users
+                            </Link>
                         </Nav.Link>
                         <Nav.Link>
-                            <Link to={"/mp272/posts"}>Posts</Link>
+                            <Link className="nav-link" to={"/mp272/posts"}>
+                                Posts
+                            </Link>
                         </Nav.Link>
                         <Nav.Link>
-                            <Link to={`/mp272/${user && user.id}/post`}>Make a Post</Link>
+                            <Link className="nav-link" to={`/mp272/${user && user.id}/post`}>
+                                Make a Post
+                            </Link>
                         </Nav.Link>
-                        <Nav.Link>{user ? <p>Logged In as {user.username}</p> : <Link to={"/mp272/login"}>Login</Link>}</Nav.Link>
+                        <Nav.Link>
+                            {user ? (
+                                <p className="nav-link">Logged In as {user.username}</p>
+                            ) : (
+                                <Link className="nav-link" to={"/mp272/login"}>
+                                    Login
+                                </Link>
+                            )}
+                        </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

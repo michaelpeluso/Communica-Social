@@ -85,55 +85,52 @@ const UsersList = (props) => {
     return (
         <div className="App">
             <Container>
-                <Form>
-                    <Row>
-                        <Col>
-                            <Form.Group>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Username"
-                                    value={uName}
-                                    onChange={(e) => {
-                                        setUName(e.target.value);
-                                    }}
-                                />
-                                <Form.Control
-                                    type="text"
-                                    placeholder="First Name"
-                                    value={fName}
-                                    onChange={(e) => {
-                                        setFName(e.target.value);
-                                    }}
-                                />
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Last Name"
-                                    value={lName}
-                                    onChange={(e) => {
-                                        setLName(e.target.value);
-                                    }}
-                                />
-                            </Form.Group>
-                            <Button variant="primary" type="button" onClick={querySearch}>
-                                Search
-                            </Button>
+                <Form className="text-center d-flex flex-column align-items-center mb-3">
+                    <h2 className="my-3">Find Users</h2>
+
+                    <Form.Group className="mb-3 row w-75">
+                        <Form.Label className="col-sm-3 col-form-label">Username</Form.Label>
+                        <Col sm={9}>
+                            <Form.Control type="text" placeholder="Search by username" value={uName} onChange={(e) => setUName(e.target.value)} />
                         </Col>
-                    </Row>
+                    </Form.Group>
+
+                    <Form.Group className="mb-3 row w-75">
+                        <Form.Label className="col-sm-3 col-form-label">First Name</Form.Label>
+                        <Col sm={9}>
+                            <Form.Control type="text" placeholder="Search by first name" value={fName} onChange={(e) => setFName(e.target.value)} />
+                        </Col>
+                    </Form.Group>
+
+                    <Form.Group className="mb-3 row w-75">
+                        <Form.Label className="col-sm-3 col-form-label">Last Name</Form.Label>
+                        <Col sm={9}>
+                            <Form.Control type="text" placeholder="Search by last name" value={lName} onChange={(e) => setLName(e.target.value)} />
+                        </Col>
+                    </Form.Group>
+
+                    <Button variant="primary" type="button" onClick={querySearch}>
+                        Search
+                    </Button>
                 </Form>
                 <br />
                 <Row>
                     {users.map((user) => {
                         return (
-                            <Col>
-                                <Card style={{ width: "18rem" }}>
-                                    <Card.Img src={user.picture.large} />
+                            <Col xs={6} sm={4} md={3} xlg={2} className="mb-4">
+                                <Card className="h-100 shadow-lg border border-light">
+                                    <Card.Img variant="top" src={user.picture.large} />
                                     <Card.Body>
                                         <Card.Title>{user.login.username}</Card.Title>
                                         <Card.Text>
                                             {user.name.first} {user.name.last}
                                         </Card.Text>
-                                        <Link to={"/mp272/users/" + user._id}>View</Link>
                                     </Card.Body>
+                                    <Card.Footer>
+                                        <Link to={`/mp272/users/${user._id}`} className="btn">
+                                            View Profile
+                                        </Link>
+                                    </Card.Footer>
                                 </Card>
                             </Col>
                         );
