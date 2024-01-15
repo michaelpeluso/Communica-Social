@@ -50,9 +50,11 @@ function App() {
                             </Link>
                         </Nav.Link>
                         <Nav.Link>
-                            <Link className="nav-link" to={`/mp272/${user && user.id}/post`}>
-                                Make a Post
-                            </Link>
+                            {user && (
+                                <Link className="nav-link" to={`/mp272/${user && user.id}/post`}>
+                                    Make a Post
+                                </Link>
+                            )}
                         </Nav.Link>
                         <Nav.Link>
                             {user ? (
