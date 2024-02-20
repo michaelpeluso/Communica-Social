@@ -34,7 +34,7 @@ Communica Social is comprised of a 3 core pages:
 - Post Feed - This is a public display of all past posts by all users. Each post includes features like a title, discription, tags, timestamp, creator, etc.
 
 ---
-
+<!--
 ##  Repository Structure
 
 ```sh
@@ -82,7 +82,7 @@ Communica Social is comprised of a 3 core pages:
 ```
 
 ---
-
+-->
 ##  Modules
 
 <details closed><summary>frontend</summary>
